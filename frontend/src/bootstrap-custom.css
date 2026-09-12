@@ -1,0 +1,153 @@
+/* Bootstrap 5 Custom Dark Cyberpunk Theme for TicketFlow */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+:root {
+  --tf-bg-dark: #0b0f19;
+  --tf-card-bg: #111827;
+  --tf-cyan: #00f2fe;
+  --tf-emerald: #10b981;
+  --tf-amber: #f59e0b;
+  --tf-crimson: #ef4444;
+  --tf-indigo: #6366f1;
+}
+
+body {
+  background-color: var(--tf-bg-dark) !important;
+  color: #f8fafc !important;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* ALTA VISIBILIDAD: Reemplazar textos en gris opaco por colores claros de alto contraste */
+.text-secondary, .text-muted, small.text-muted, small.text-secondary {
+  color: #cbd5e1 !important; /* Gris claro de alta legibilidad sobre fondo oscuro */
+  font-weight: 500;
+}
+
+.text-dark-muted {
+  color: #94a3b8 !important;
+}
+
+/* Custom Bootstrap Navbar */
+.navbar-custom {
+  background-color: rgba(11, 15, 25, 0.95) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+}
+
+/* Custom Bootstrap Cards */
+.card-custom {
+  background-color: var(--tf-card-bg) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 16px !important;
+  color: #f8fafc !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.card-custom:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 242, 254, 0.15) !important;
+  border-color: rgba(0, 242, 254, 0.4) !important;
+}
+
+/* Custom Buttons */
+.btn-cyan {
+  background: linear-gradient(135deg, #00f2fe 0%, #6366f1 100%) !important;
+  color: #000000 !important;
+  font-weight: 800 !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 10px 20px !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-cyan:hover {
+  background: linear-gradient(135deg, #38f9d7 0%, #4f46e5 100%) !important;
+  box-shadow: 0 4px 20px rgba(0, 242, 254, 0.3) !important;
+  color: #000000 !important;
+}
+
+.btn-flash-pay {
+  background: linear-gradient(135deg, #10b981 0%, #00f2fe 100%) !important;
+  color: #000000 !important;
+  font-weight: 900 !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 10px 20px !important;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.4) !important;
+}
+
+.btn-flash-pay:hover {
+  background: linear-gradient(135deg, #34d399 0%, #38f9d7 100%) !important;
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.6) !important;
+}
+
+/* Seat Buttons */
+.seat-btn {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: 8px;
+  font-weight: 900;
+  font-size: 0.85rem;
+  border: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.seat-available {
+  background-color: var(--tf-emerald) !important;
+  color: #000000 !important;
+}
+
+.seat-available:hover {
+  transform: scale(1.18);
+  box-shadow: 0 0 14px var(--tf-emerald);
+}
+
+.seat-reserved {
+  background-color: var(--tf-amber) !important;
+  color: #000000 !important;
+  cursor: not-allowed;
+}
+
+.seat-sold {
+  background-color: #334155 !important;
+  color: #94a3b8 !important;
+  cursor: not-allowed;
+}
+
+/* Badges & Chips */
+.badge-custom {
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 6px 12px;
+}
+
+/* Modal & Offcanvas Styling */
+.modal-content-dark, .offcanvas-dark {
+  background-color: #0b0f19 !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Stage Banner */
+.stage-banner {
+  background: linear-gradient(135deg, rgba(0, 242, 254, 0.15) 0%, rgba(99, 102, 241, 0.25) 100%);
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  color: var(--tf-cyan);
+  font-weight: 900;
+  letter-spacing: 3px;
+  border-radius: 12px;
+  padding: 8px 0;
+}
+
+.seat-selected {
+  background-color: var(--tf-cyan) !important;
+  color: #000000 !important;
+  transform: scale(1.15);
+  box-shadow: 0 0 16px var(--tf-cyan) !important;
+  border: 2px solid #ffffff !important;
+}
+

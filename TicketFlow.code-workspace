@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "name": "🎨 FRONTEND (React 18 + Vite)",
+      "path": "frontend"
+    },
+    {
+      "name": "⚡ BACKEND .NET (C# REST API)",
+      "path": "backend-dotnet"
+    },
+    {
+      "name": "🟢 BACKEND Node.js (Express API)",
+      "path": "backend"
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "typescript.tsdk": "frontend/node_modules/typescript/lib"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "coreclr",
+      "request": "launch",
+      "name": "⚡ Run Backend .NET",
+      "program": "${workspaceFolder}/backend-dotnet/bin/Debug/net9.0/TicketFlow.Api.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/backend-dotnet",
+      "stopAtEntry": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "preLaunchTask": "build-dotnet"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "🟢 Run Backend Node.js",
+      "program": "${workspaceFolder}/backend/server.js",
+      "cwd": "${workspaceFolder}/backend"
+    }
+  ]
+}
