@@ -1,62 +1,38 @@
-# 🎟️ TicketFlow — Sistema de Venta de Entradas
+# TicketFlow - Sistema de Venta de Entradas
 
-TicketFlow es una plataforma web para la venta de entradas en tiempo real. Cuenta con control de concurrencia para evitar compras dobles de la misma entrada, reserva temporal de 5 minutos, billetera virtual con recarga de saldo, registro de auditoría de operaciones y un diseño web moderno y responsivo desarrollado con **React** y **Node.js / .NET**.
+TicketFlow es una aplicación web para la venta de entradas a eventos y conciertos en tiempo real. Permite seleccionar asientos, realizar reservas temporales de 5 minutos, recargar saldo en una billetera virtual y llevar un registro de compras y movimientos.
 
----
+## Tecnologías
 
-## 🛠️ Tecnologías Utilizadas
+- **Frontend**: React, Vite, Bootstrap, Axios.
+- **Backend**: Node.js (Express) / .NET (C#).
+- **Base de datos**: SQLite para desarrollo local y script para SQL Server (`schema_sqlserver.sql`).
 
-- **Frontend**: React 18, Vite, Bootstrap, React-Bootstrap, Bootstrap Icons, Axios, Canvas Confetti.
-- **Backend (Node.js)**: Express.js (API REST), Sequelize ORM, Swagger UI (`/api-docs`).
-- **Backend (.NET)**: C# / .NET 9 Web API, Entity Framework Core, Kestrel.
-- **Base de Datos**: 
-  - **SQLite**: Para ejecución rápida y desarrollo local.
-  - **SQL Server**: Script T-SQL completo ubicado en `./backend/database/schema_sqlserver.sql`.
-- **Concurrencia**: Control mediante versión (`Version`) en cada entrada (Optimistic Locking) y transacciones ACID.
-- **Proceso de Fondo**: Job automático que libera las reservas vencidas después de 5 minutos.
-- **Auditoría**: Historial inmutable de compras, reservas y recargas de saldo.
+## Cómo ejecutar el proyecto
 
----
-
-## 🚀 Cómo Ejecutar el Proyecto
-
-### 1. Backend (Node.js / Express)
+### Backend (Node.js)
 ```bash
 cd backend
 npm install
 npm start
 ```
-- API REST en: `http://localhost:4000`
-- Documentación Swagger: `http://localhost:4000/api-docs`
+El servidor backend se inicia en `http://localhost:4000`.
 
-*(Opcional: Si preferís la versión .NET, podés abrir `backend-dotnet/TicketFlow.sln` en Visual Studio o ejecutar `dotnet run` dentro de `backend-dotnet`)*
+*(Si querés usar la versión de .NET, podés abrir `backend-dotnet/TicketFlow.sln` en Visual Studio)*
 
-### 2. Frontend (React + Vite)
+### Frontend (React)
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-- Aplicación web disponible en: `http://localhost:3000`
+La aplicación web se inicia en `http://localhost:3000`.
 
----
+## Funcionalidades principales
 
-## 🗄️ Estructura de Base de Datos (`TicketFlowDB`)
-
-El script de SQL Server (`schema_sqlserver.sql`) crea las siguientes tablas:
-- **Events**: Información de los shows (nombre, fecha, lugar, estado).
-- **Sectors**: Sectores del estadio o teatro (Campo, Platea) con sus precios.
-- **Seats**: Butacas con control de versión para concurrencia.
-- **Users**: Usuarios, perfiles (Cliente, Admin) y saldo disponible en la billetera.
-- **Reservations**: Reservas temporales con fecha y hora de vencimiento (5 minutos).
-- **AuditLogs**: Registro de movimientos y operaciones realizadas en el sistema.
-
----
-
-## 🧪 Ejemplo de Prueba de Concurrencia
-
-1. Abrí la aplicación en dos pestañas del navegador en `http://localhost:3000`.
-2. Ingresá al evento **Tame Impala — The Slow Rush**.
-3. Seleccioná la misma butaca (ejemplo: Fila A - N° 1) en ambas pestañas al mismo tiempo.
-4. **Resultado**: La primera pestaña confirmará la reserva por 5 minutos. La segunda pestaña mostrará el aviso *"Asiento ya no disponible"*.
-5. En el panel de **Auditoría** (botón superior) podés ver el registro de ambos intentos en tiempo real.
+- **Selección de butacas**: Visualización de mapa de asientos por sector (Campo y Platea).
+- **Reserva temporal**: Bloqueo del asiento seleccionado durante 5 minutos para completar el pago.
+- **Control de concurrencia**: Evita que dos usuarios puedan reservar o comprar la misma entrada al mismo tiempo.
+- **Billetera virtual**: Permite cambiar de usuario y recargar saldo para realizar las compras.
+- **Panel de administración**: Creación de nuevos eventos y configuración de entradas.
+- **Historial de auditoría**: Registro detallado de reservas, pagos y liberaciones.
