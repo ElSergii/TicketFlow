@@ -1,5 +1,42 @@
 import { sequelize } from '../config/db.js';
-import { Seat, Reservation, AuditLog, User, Sector } from '../models/index.js';
+import { Seat, Reservation, AuditLog, User, Sector, Event } from '../models/index.js';
+
+// Función para verificar si todas las butacas de un evento fueron vendidas y marcarlo como 'Agotado'
+const checkAndMarkEventSoldOut = async (eventId, transaction, userId = 1, userName = 'Sistema') => {
+  if (!eventId) return;
+  const sectors = await Sector.findAll({ where: { eventId }, transaction });
+  const sectorIds = sectors.map((s) => s.id);
+  if (sectorIds.length === 0) return;
+
+  const availableOrReservedCount = await Seat.count({
+    where: {
+      sectorId: sectorIds,
+      status: ['Disponible', 'Reservado'],
+    },
+    transaction,
+  });
+
+  if (availableOrReservedCount === 0) {
+    const eventObj = await Event.findByPk(eventId, { transaction });
+    if (eventObj && eventObj.status !== 'Agotado') {
+      await eventObj.update({ status: 'Agotado' }, { transaction });
+      await AuditLog.create(
+        {
+          userId,
+          userName,
+          action: 'EVENT_SOLD_OUT',
+          entityType: 'Event',
+          entityId: String(eventId),
+          description: `¡El evento '${eventObj.name}' vendió el 100% de sus entradas! Su estado cambió a AGOTADO.`,
+          details: JSON.stringify({ eventId, eventName: eventObj.name }),
+          amountSpent: 0.00,
+          userBalanceAfter: 0.00,
+        },
+        { transaction }
+      );
+    }
+  }
+};
 
 export const processPayment = async (req, res) => {
   const { reservationId, userId, paymentMethod } = req.body;
@@ -32,7 +69,10 @@ export const processPayment = async (req, res) => {
       });
     }
 
-    const seat = await Seat.findByPk(reservation.seatId, { transaction });
+    const seat = await Seat.findByPk(reservation.seatId, {
+      include: [{ model: Sector, as: 'sector' }],
+      transaction,
+    });
 
     if (!seat) {
       await transaction.rollback();
@@ -73,6 +113,11 @@ export const processPayment = async (req, res) => {
       { transaction }
     );
 
+    // Verificar si el evento se quedó sin entradas disponibles y marcarlo como Agotado
+    if (seat.sector?.eventId) {
+      await checkAndMarkEventSoldOut(seat.sector.eventId, transaction, user?.id, user?.name);
+    }
+
     await transaction.commit();
 
     return res.status(200).json({
@@ -111,6 +156,7 @@ export const processBatchPayments = async (req, res) => {
 
     let totalAmount = 0;
     const itemsToPay = [];
+    const eventIdsSet = new Set();
 
     for (let idx_tk = 0; idx_tk < reservationIds.length; idx_tk++) {
       const resId = reservationIds[idx_tk];
@@ -132,6 +178,10 @@ export const processBatchPayments = async (req, res) => {
       const price = Number(reservation.seat?.sector?.price || 22000);
       totalAmount += price;
       itemsToPay.push({ reservation, seat: reservation.seat, sector: reservation.seat?.sector, price });
+
+      if (reservation.seat?.sector?.eventId) {
+        eventIdsSet.add(reservation.seat.sector.eventId);
+      }
     }
 
     const currentBalance = Number(user.balance || 0);
@@ -177,6 +227,11 @@ export const processBatchPayments = async (req, res) => {
       },
       { transaction }
     );
+
+    // Verificar para cada evento afectado si se agotaron todas las entradas
+    for (const eventId of eventIdsSet) {
+      await checkAndMarkEventSoldOut(eventId, transaction, user.id, user.name);
+    }
 
     await transaction.commit();
     return res.status(200).json({

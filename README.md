@@ -32,6 +32,7 @@ La aplicación web se inicia en `http://localhost:3000`.
 
 - **Selección de butacas**: Visualización de mapa de asientos por sector (Campo y Platea).
 - **Reserva temporal**: Bloqueo del asiento seleccionado durante 5 minutos para completar el pago.
+- **Estado Agotado automático**: Cuando se venden todas las entradas de un evento, su estado cambia automáticamente a "Agotado".
 - **Control de concurrencia**: Evita que dos usuarios puedan reservar o comprar la misma entrada al mismo tiempo.
 - **Billetera virtual**: Permite cambiar de usuario y recargar saldo para realizar las compras.
 - **Panel de administración**: Creación de nuevos eventos y configuración de entradas.
