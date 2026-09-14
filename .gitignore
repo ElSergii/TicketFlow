@@ -25,3 +25,8 @@ ticketflow.sqlite*
 .DS_Store
 Thumbs.db
 .idea/
+
+# Environment files
+.env
+.env.local
+

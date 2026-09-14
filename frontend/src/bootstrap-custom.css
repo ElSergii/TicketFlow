@@ -151,3 +151,87 @@ body {
   border: 2px solid #ffffff !important;
 }
 
+/* Contenedor de Scroll Horizontal Suave para Mapa de Asientos en Celulares */
+.seat-map-scroll-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 12px 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--tf-cyan) rgba(255, 255, 255, 0.05);
+}
+
+.seat-map-scroll-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.seat-map-scroll-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.seat-map-scroll-container::-webkit-scrollbar-thumb {
+  background: var(--tf-cyan);
+  border-radius: 4px;
+}
+
+/* Pestañas táctiles para celulares */
+.touch-scroll-nav {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.touch-scroll-nav::-webkit-scrollbar {
+  display: none;
+}
+.touch-scroll-nav .nav-item {
+  white-space: nowrap;
+}
+
+/* MEDIA QUERIES RESPONSIVAS PARA CELULARES */
+@media (max-width: 768px) {
+  .seat-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 0.75rem;
+    border-radius: 6px;
+  }
+  
+  .stage-banner {
+    width: 95% !important;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+  }
+
+  .floating-cart-bar {
+    padding: 12px !important;
+    bottom: 0 !important;
+  }
+}
+
+@media (max-width: 576px) {
+  body {
+    font-size: 0.92rem;
+  }
+
+  .display-4 {
+    font-size: 2rem !important;
+  }
+
+  .btn-cyan, .btn-flash-pay {
+    padding: 8px 14px !important;
+    font-size: 0.9rem !important;
+  }
+
+  .offcanvas-dark {
+    width: 100% !important;
+  }
+
+  .card-custom {
+    border-radius: 12px !important;
+  }
+}
+
+

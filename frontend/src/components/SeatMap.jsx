@@ -79,14 +79,14 @@ export const SeatMap = ({ eventData, onBack, onReserveSeat, onReserveBatch, load
         variant="tabs"
         activeKey={selectedSectorId}
         onSelect={(val) => val && setSelectedSectorId(Number(val))}
-        className="mb-4 border-secondary border-opacity-25"
+        className="touch-scroll-nav mb-4 border-secondary border-opacity-25"
       >
         {/* Pestañas de sectores */}
         {eventData?.sectors?.map((sector, index) => (
           <Nav.Item key={sector.id || index}>
             <Nav.Link
               eventKey={sector.id}
-              className={`fw-bold fs-5 px-4 py-2 ${
+              className={`fw-bold fs-6 fs-md-5 px-3 px-md-4 py-2 ${
                 selectedSectorId === sector.id ? 'text-info border-info border-bottom-0 bg-dark' : 'text-light'
               }`}
             >
@@ -99,74 +99,76 @@ export const SeatMap = ({ eventData, onBack, onReserveSeat, onReserveBatch, load
       <Row className="g-4 mb-5">
         {/* Mapa de butacas */}
         <Col xs={12} lg={8}>
-          <Card className="card-custom p-4 text-center">
+          <Card className="card-custom p-3 p-md-4 text-center">
             {/* Escenario */}
             <div className="stage-banner mx-auto w-75 mb-4">▲ ESCENARIO ▲</div>
 
-            {/* Matriz de asientos */}
-            <div className="d-flex flex-column gap-2 align-items-center">
-              {sortedRowKeys.map((rowLetter, index) => {
-                const rowSeats = rowsMap[rowLetter] || [];
-                return (
-                  <div key={rowLetter || index} className="d-flex align-items-center gap-2">
-                    <span className="fw-black text-info me-2" style={{ width: '20px', textAlign: 'right' }}>
-                      {rowLetter}
-                    </span>
+            {/* Matriz de asientos con contenedor de scroll horizontal para celulares */}
+            <div className="seat-map-scroll-container">
+              <div className="d-inline-flex flex-column gap-2 align-items-center min-w-max">
+                {sortedRowKeys.map((rowLetter, index) => {
+                  const rowSeats = rowsMap[rowLetter] || [];
+                  return (
+                    <div key={rowLetter || index} className="d-flex align-items-center gap-1 gap-sm-2">
+                      <span className="fw-black text-info me-1 me-sm-2" style={{ width: '20px', textAlign: 'right' }}>
+                        {rowLetter}
+                      </span>
 
-                    {rowSeats.map((seatItem, seatIndex) => {
-                      const isAvailable = seatItem.status === 'Disponible';
-                      const isReserved = seatItem.status === 'Reservado';
-                      const isSold = seatItem.status === 'Vendida';
-                      const isSelected = selectedSeats.some((s) => s.id === seatItem.id);
+                      {rowSeats.map((seatItem, seatIndex) => {
+                        const isAvailable = seatItem.status === 'Disponible';
+                        const isReserved = seatItem.status === 'Reservado';
+                        const isSold = seatItem.status === 'Vendida';
+                        const isSelected = selectedSeats.some((s) => s.id === seatItem.id);
 
-                      let seatClass = 'seat-available';
-                      if (isSelected) seatClass = 'seat-selected';
-                      else if (isReserved) seatClass = 'seat-reserved';
-                      else if (isSold) seatClass = 'seat-sold';
+                        let seatClass = 'seat-available';
+                        if (isSelected) seatClass = 'seat-selected';
+                        else if (isReserved) seatClass = 'seat-reserved';
+                        else if (isSold) seatClass = 'seat-sold';
 
-                      return (
-                        <OverlayTrigger
-                          key={seatItem.id || idx_tk}
-                          placement="top"
-                          overlay={
-                            <Tooltip id={`tooltip-${seatItem.id}`}>
-                              Fila {seatItem.rowIdentifier} — Butaca N° {seatItem.seatNumber} ({isSelected ? 'Seleccionada' : seatItem.status})
-                            </Tooltip>
-                          }
-                        >
-                          <span>
-                            <button
-                              disabled={!isAvailable || loading}
-                              onClick={() => handleToggleSeat(seatItem)}
-                              className={`seat-btn ${seatClass}`}
-                            >
-                              {seatItem.seatNumber}
-                            </button>
-                          </span>
-                        </OverlayTrigger>
-                      );
-                    })}
-                  </div>
-                );
-              })}
+                        return (
+                          <OverlayTrigger
+                            key={seatItem.id || idx_tk}
+                            placement="top"
+                            overlay={
+                              <Tooltip id={`tooltip-${seatItem.id}`}>
+                                Fila {seatItem.rowIdentifier} — Butaca N° {seatItem.seatNumber} ({isSelected ? 'Seleccionada' : seatItem.status})
+                              </Tooltip>
+                            }
+                          >
+                            <span>
+                              <button
+                                disabled={!isAvailable || loading}
+                                onClick={() => handleToggleSeat(seatItem)}
+                                className={`seat-btn ${seatClass}`}
+                              >
+                                {seatItem.seatNumber}
+                              </button>
+                            </span>
+                          </OverlayTrigger>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Seat Colors Legend */}
-            <div className="d-flex justify-content-center flex-wrap gap-4 mt-5 pt-3 border-top border-secondary border-opacity-25">
+            <div className="d-flex justify-content-center flex-wrap gap-3 gap-md-4 mt-4 pt-3 border-top border-secondary border-opacity-25 fs-6">
               <div className="d-flex align-items-center gap-2">
-                <div style={{ width: '16px', height: '16px', borderRadius: '4px', backgroundColor: '#00f2fe' }}></div>
+                <div style={{ width: '14px', height: '14px', borderRadius: '4px', backgroundColor: '#00f2fe' }}></div>
                 <strong className="text-info">Seleccionada ({selectedSeats.length})</strong>
               </div>
               <div className="d-flex align-items-center gap-2">
-                <div style={{ width: '16px', height: '16px', borderRadius: '4px', backgroundColor: '#10b981' }}></div>
+                <div style={{ width: '14px', height: '14px', borderRadius: '4px', backgroundColor: '#10b981' }}></div>
                 <strong className="text-light">Disponible ({totalAvailable})</strong>
               </div>
               <div className="d-flex align-items-center gap-2">
-                <div style={{ width: '16px', height: '16px', borderRadius: '4px', backgroundColor: '#f59e0b' }}></div>
+                <div style={{ width: '14px', height: '14px', borderRadius: '4px', backgroundColor: '#f59e0b' }}></div>
                 <strong className="text-light">Reservado ({totalReserved})</strong>
               </div>
               <div className="d-flex align-items-center gap-2">
-                <div style={{ width: '16px', height: '16px', borderRadius: '4px', backgroundColor: '#334155' }}></div>
+                <div style={{ width: '14px', height: '14px', borderRadius: '4px', backgroundColor: '#334155' }}></div>
                 <strong className="text-light">Vendido ({totalSold})</strong>
               </div>
             </div>
@@ -212,11 +214,11 @@ export const SeatMap = ({ eventData, onBack, onReserveSeat, onReserveBatch, load
       {/* Floating Bottom Action Bar for Multi-Seat Cart */}
       {selectedSeats.length > 0 && (
         <div
-          className="position-fixed bottom-0 start-50 translate-middle-x p-3 w-100"
+          className="position-fixed bottom-0 start-50 translate-middle-x p-2 p-md-3 w-100 floating-cart-bar"
           style={{ maxWidth: '960px', zIndex: 1050 }}
         >
           <Card className="bg-dark text-white border-info border-2 rounded-4 shadow-lg p-3">
-            <div className="d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div className="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3">
               <div>
                 <Badge bg="info" className="text-dark fs-6 fw-extrabold px-3 py-2 me-2">
                   {selectedSeats.length} {selectedSeats.length === 1 ? 'butaca' : 'butacas'}
@@ -224,27 +226,27 @@ export const SeatMap = ({ eventData, onBack, onReserveSeat, onReserveBatch, load
                 <span className="text-light fw-bold me-3">
                   Total: <span className="text-info fs-4 fw-black">$ {totalSelectedPrice.toLocaleString('es-AR')}</span>
                 </span>
-                <small className="text-light opacity-75 d-block d-sm-inline">
+                <small className="text-light opacity-75 d-block d-sm-inline mt-1 mt-sm-0">
                   ({selectedSeats.map((s, idx_tk) => `Fila ${s.rowIdentifier}-${s.seatNumber}`).join(', ')})
                 </small>
               </div>
 
-              <div className="d-flex gap-2">
+              <div className="d-flex gap-2 w-100 w-sm-auto justify-content-end">
                 <Button
                   variant="outline-secondary"
                   size="sm"
                   onClick={() => setSelectedSeats([])}
-                  className="text-light border-secondary"
+                  className="text-light border-secondary flex-grow-1 flex-sm-grow-0"
                 >
-                  Desmarcar todo
+                  Desmarcar
                 </Button>
                 <Button
                   disabled={loading}
                   onClick={handleConfirmBatch}
-                  className="btn-cyan px-4 py-2 text-uppercase fw-extrabold"
+                  className="btn-cyan px-3 px-md-4 py-2 text-uppercase fw-extrabold flex-grow-1 flex-sm-grow-0"
                 >
                   <i className="bi bi-cart-plus-fill me-2"></i>
-                  {loading ? 'Reservando...' : `Añadir (${selectedSeats.length}) al Carrito`}
+                  {loading ? 'Reservando...' : `Añadir (${selectedSeats.length})`}
                 </Button>
               </div>
             </div>

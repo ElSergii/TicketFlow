@@ -52,18 +52,18 @@ export const Header = ({
         </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end gap-3 mt-2 mt-lg-0">
+        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end gap-2 gap-lg-3 mt-3 mt-lg-0">
           {/* Virtual Wallet Balance & Top-up Button */}
           {!isAdmin && currentUser && (
-            <div className="d-flex align-items-center gap-2">
+            <div className="d-flex flex-wrap align-items-center gap-2 w-100 w-lg-auto">
               <div
-                className="d-flex align-items-center gap-2 px-3 py-1.5 rounded-3"
+                className="d-flex align-items-center gap-2 px-3 py-2 rounded-3 flex-grow-1 flex-lg-grow-0"
                 style={{
                   backgroundColor: 'rgba(16, 185, 129, 0.12)',
                   border: '1px solid rgba(16, 185, 129, 0.4)',
                   color: '#10b981',
                   fontWeight: 800,
-                  fontSize: '0.9rem',
+                  fontSize: '0.88rem',
                 }}
               >
                 <i className="bi bi-wallet2 text-success"></i>
@@ -74,7 +74,7 @@ export const Header = ({
                 variant="success"
                 size="sm"
                 onClick={onOpenDeposit}
-                className="fw-extrabold d-flex align-items-center gap-1 rounded-3 px-2.5 py-1.5"
+                className="fw-extrabold d-flex align-items-center justify-content-center gap-1 rounded-3 px-3 py-2 flex-grow-1 flex-lg-grow-0"
                 title="Cargar dinero a mi billetera virtual"
               >
                 <i className="bi bi-plus-circle-fill"></i>
@@ -84,23 +84,25 @@ export const Header = ({
           )}
 
           {/* User Selector Dropdown */}
-          <Dropdown>
+          <Dropdown className="w-100 w-lg-auto">
             <Dropdown.Toggle
               variant="dark"
               id="dropdown-user-select"
-              className="d-flex align-items-center gap-2 border-secondary bg-dark text-white fw-bold rounded-3"
+              className="d-flex align-items-center justify-content-between gap-2 border-secondary bg-dark text-white fw-bold rounded-3 w-100"
             >
-              <img
-                src={currentUser?.avatarUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde'}
-                alt="avatar"
-                className="rounded-circle"
-                style={{ width: '22px', height: '22px', objectFit: 'cover' }}
-              />
-              <span>{currentUser?.name || 'Usuario'} ({currentUser?.role === 'Admin' ? 'Admin' : 'Cliente'})</span>
+              <div className="d-flex align-items-center gap-2 text-truncate">
+                <img
+                  src={currentUser?.avatarUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde'}
+                  alt="avatar"
+                  className="rounded-circle flex-shrink-0"
+                  style={{ width: '22px', height: '22px', objectFit: 'cover' }}
+                />
+                <span className="text-truncate">{currentUser?.name || 'Usuario'} ({currentUser?.role === 'Admin' ? 'Admin' : 'Cliente'})</span>
+              </div>
             </Dropdown.Toggle>
 
-            <Dropdown.Menu variant="dark" className="bg-dark border-secondary">
-              {/* Lista de usuarios disponles */}
+            <Dropdown.Menu variant="dark" className="bg-dark border-secondary w-100">
+              {/* Lista de usuarios disponibles */}
               {users.map((usr, index) => (
                 <Dropdown.Item
                   key={usr.id || index}
@@ -122,29 +124,31 @@ export const Header = ({
           </Dropdown>
 
           {/* Action Buttons */}
-          <Button
-            variant="outline-light"
-            onClick={onOpenAudit}
-            className="d-flex align-items-center gap-2 border-secondary fw-bold rounded-3"
-          >
-            <i className="bi bi-database text-info"></i>
-            <span>Auditoría</span>
-          </Button>
-
-          {!isAdmin && (
+          <div className="d-flex align-items-center gap-2 w-100 w-lg-auto mt-1 mt-lg-0">
             <Button
-              className="btn-cyan d-flex align-items-center gap-2"
-              onClick={onOpenCart}
+              variant="outline-light"
+              onClick={onOpenAudit}
+              className="d-flex align-items-center justify-content-center gap-2 border-secondary fw-bold rounded-3 flex-grow-1 flex-lg-grow-0 py-2"
             >
-              <i className="bi bi-cart-check-fill fs-5"></i>
-              <span>Carrito</span>
-              {cartCount > 0 && (
-                <Badge bg="danger" pill className="ms-1 fs-6">
-                  {cartCount} ({countdownFormatted})
-                </Badge>
-              )}
+              <i className="bi bi-database text-info"></i>
+              <span>Auditoría</span>
             </Button>
-          )}
+
+            {!isAdmin && (
+              <Button
+                className="btn-cyan d-flex align-items-center justify-content-center gap-2 flex-grow-1 flex-lg-grow-0 py-2"
+                onClick={onOpenCart}
+              >
+                <i className="bi bi-cart-check-fill fs-5"></i>
+                <span>Carrito</span>
+                {cartCount > 0 && (
+                  <Badge bg="danger" pill className="ms-1 fs-6">
+                    {cartCount} ({countdownFormatted})
+                  </Badge>
+                )}
+              </Button>
+            )}
+          </div>
         </Navbar.Collapse>
       </Container>
     </Navbar>

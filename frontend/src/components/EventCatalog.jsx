@@ -36,26 +36,26 @@ export const EventCatalog = ({ events, onSelectEvent }) => {
       </div>
 
       {/* Filter Nav Pills (Bootstrap Nav) */}
-      <div className="d-flex justify-content-start mb-4">
+      <div className="d-flex justify-content-start mb-4 overflow-hidden">
         <Nav
           variant="pills"
           activeKey={filter}
           onSelect={(selectedKey) => selectedKey && setFilter(selectedKey)}
-          className="p-1 rounded-3 bg-dark border border-secondary"
+          className="touch-scroll-nav p-1 rounded-3 bg-dark border border-secondary w-100 w-sm-auto"
           style={{ backgroundColor: '#111827' }}
         >
           <Nav.Item>
-            <Nav.Link eventKey="Todos" className="fw-bold px-4 text-white">
+            <Nav.Link eventKey="Todos" className="fw-bold px-3 px-md-4 text-white">
               Todos
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="Disponibles" className="fw-bold px-4 text-white">
+            <Nav.Link eventKey="Disponibles" className="fw-bold px-3 px-md-4 text-white">
               Disponibles
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="Agotados" className="fw-bold px-4 text-white">
+            <Nav.Link eventKey="Agotados" className="fw-bold px-3 px-md-4 text-white">
               Agotados
             </Nav.Link>
           </Nav.Item>

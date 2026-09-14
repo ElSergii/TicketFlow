@@ -51,7 +51,7 @@ export const AuditDrawer = ({ open, onClose, currentUser }) => {
       onHide={onClose}
       placement="end"
       className="offcanvas-dark p-2"
-      style={{ width: '540px' }}
+      style={{ width: '540px', maxWidth: '100vw' }}
       data-sys-render="auto"
     >
       <Offcanvas.Header closeButton closeVariant="white" className="border-bottom border-secondary border-opacity-25 pb-3">

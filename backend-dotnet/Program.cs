@@ -10,9 +10,22 @@ var builder = WebApplication.CreateBuilder(args);
 // Configuración de Kestrel para escuchar en el puerto 4000
 builder.WebHost.UseUrls("http://localhost:4000");
 
-// Agregar Servicios y DbContext EF Core (SQLite)
+// Configuración de DbContext EF Core (SQL Server o SQLite)
+var useSqlServer = builder.Configuration.GetValue<bool>("UseSqlServer") || !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("USE_SQL_SERVER"));
+var sqlServerConnStr = builder.Configuration.GetConnectionString("SqlServer") ?? Environment.GetEnvironmentVariable("SQLSERVER_CONNECTION_STRING");
+var sqliteConnStr = builder.Configuration.GetConnectionString("Sqlite") ?? "Data Source=ticketflow.sqlite";
+
 builder.Services.AddDbContext<TicketFlowDbContext>(options =>
-    options.UseSqlite("Data Source=ticketflow.sqlite"));
+{
+    if (useSqlServer && !string.IsNullOrEmpty(sqlServerConnStr))
+    {
+        options.UseSqlServer(sqlServerConnStr);
+    }
+    else
+    {
+        options.UseSqlite(sqliteConnStr);
+    }
+});
 
 // Controllers y JSON serialization options (camelCase)
 builder.Services.AddControllers()
